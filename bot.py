@@ -32,16 +32,11 @@ async def on_ready():
 @client.event
 async def on_message(message):
     print(logger.chat_log(message=message))
-    logger.close_chat_file()
 @client.event
 async def on_message_edit(before,after):
     print(logger.chat_edit_log(before,after))
-    logger.close_chat_file()
 
-@client.event
-async def on_error():
-    logger.close_chat_file()
-    print("STOPPING BOT...")
+
 try:
     client.run(TOKEN)
 except RuntimeError:
