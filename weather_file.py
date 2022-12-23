@@ -1,3 +1,17 @@
+# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+"""
+This module provides a class for retrieving and formatting weather data for a given city.
+
+Attributes:
+---
+    city (str): The name of the city for which to retrieve weather data. Defaults to "esbjerg".
+    api_key (str): The API key used to access the OpenWeatherMap API.
+
+Methods:
+---
+    weather: Retrieves and returns current weather data for the specified city as a formatted string.
+"""
 import requests
 import helper
 from dotenv import load_dotenv

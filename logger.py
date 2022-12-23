@@ -1,4 +1,25 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+"""
+This module contains the Logger class, which is used to log various events that occur in a Discord chat.
+
+Attributes:
+---
+    chat_log_file: A file object for the chat log file.
+    sys_log_file: A file object for the system log file.
+    current_time: A string representing the current time.
+
+Methods:
+---
+    init: Initializes the Logger object and opens the log files.
+    close_chat_file: Closes the chat log file.
+    close_sys_file: Closes the system log file.
+    close_files: Closes both log files.
+    chat_log: Logs a message in the chat log file.
+    chat_edit_log: Logs an edited message in the chat log file.
+    chat_delete_log: Logs a deleted message in the chat log file.
+    sys_log: Logs a message in the system log file.
+"""
 from datetime import datetime
 
 class Logger:
@@ -21,7 +42,7 @@ class Logger:
         self.close_sys_file()
 
     def chat_log(self, message) -> str:
-        msg = f"{self.log_boilerplate(message, 'chat')} {message.content}"
+        msg = f"{self.log_boilerplate(message, 'CHAT')} {message.content}"
         self.chat_log_file.write(f"{msg}\n") 
         self.chat_log_file.flush()
         return msg

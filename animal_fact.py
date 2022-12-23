@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+"""
+This module consists of two classes, DogFact and CatFact, that are used to retrieve random facts about dogs and cats, respectively, from online APIs.
+
+Attributes:
+---
+    None
+
+Methods:
+---
+    random_fact: Retrieves a random fact from an online API and returns it as a string.
+"""
 import requests
 
 class DogFact:
