@@ -235,10 +235,9 @@ async def on_message_delete(before):
     """
     print(logger.chat_delete_log(before))
 
-
 if __name__ == "__main__":
     try:
         client.run(TOKEN)
     except RuntimeError:
-        print(logger.sys_log("STOPPING BOT"))
+        print("STOPPING BOT")
         logger.close_files()
