@@ -55,8 +55,8 @@ class Logger:
                 returns the logged message.
     """
     def __init__(self) -> None:
-        self.chat_log_file = open("logs/chatlog.log", "a+", encoding=("utf-8"))
-        self.sys_log_file = open("logs/syslog.log", "a+", encoding=("utf-8"))
+        self.chat_log_file = open("logs/chatlog.log", "a+", encoding=("utf-8")) #pylint:disable=consider-using-with
+        self.sys_log_file = open("logs/syslog.log", "a+", encoding=("utf-8"))   #pylint:disable=consider-using-with
         self.current_time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
     def log_boilerplate(self, message, event: str):

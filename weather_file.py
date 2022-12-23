@@ -16,7 +16,7 @@ Methods:
 import os
 import requests
 from dotenv import load_dotenv
-import helper
+from helper import get_lat_long
 
 load_dotenv()
 
@@ -56,7 +56,7 @@ class Weather:
         """
         celsius = "°"
         try:
-            lat, lon = helper.get_lat_long(self.city)
+            lat, lon = get_lat_long(self.city)
         except AttributeError:
             return f'Im sorry. I could not find the city "{self.city}"\nIf this is an bug, please contact **Tr4shL0rd#8279** or create a new issue on https://github.com/Tr4shL0rd/Tr4shBot/issues'  # pylint:disable=line-too-long
         resp = requests.get(
