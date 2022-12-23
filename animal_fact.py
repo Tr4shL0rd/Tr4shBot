@@ -15,6 +15,7 @@ Methods:
 """
 import requests
 
+
 class DogFact:
     """
     This class is used to retrieve random dog facts from an online API.
@@ -27,6 +28,7 @@ class DogFact:
     ---
         random_fact: Returns a random dog fact as a string.
     """
+
     def __init__(self) -> None:
         """
         The constructor for the DogFact class.
@@ -52,7 +54,9 @@ class DogFact:
         ---
             str: A random dog fact.
         """
-        return requests.get("https://dogapi.dog/api/facts", timeout=1).json()["facts"][0]
+        return requests.get("https://dogapi.dog/api/facts", timeout=1).json()["facts"][
+            0
+        ]
 
 
 class CatFact:
@@ -93,4 +97,6 @@ class CatFact:
         ---
             str: A random cat fact.
         """
-        return requests.get("https://meowfacts.herokuapp.com/", timeout=1).json()["data"][0]
+        return requests.get("https://meowfacts.herokuapp.com/", timeout=1).json()[
+            "data"
+        ][0]

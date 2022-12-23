@@ -10,12 +10,14 @@ Attributes:
 
 Methods:
 ---
-    weather: Retrieves and returns current weather data for the specified city as a formatted string.
+    weather: Retrieves and returns current weather data for the
+    specified city as a formatted string.
 """
 import os
 import requests
 from dotenv import load_dotenv
 import helper
+
 load_dotenv()
 
 
@@ -32,9 +34,11 @@ class Weather:
     ---
         weather: Returns a string containing weather information for the specified city.
     """
+
     def __init__(self, city: str = "esbjerg") -> None:
         self.city = city
         self.api_key = os.getenv("openWeather_API_KEY")
+
     def weather(self):
         """
         Retrieves weather information for a given city.
@@ -54,13 +58,16 @@ class Weather:
         try:
             lat, lon = helper.get_lat_long(self.city)
         except AttributeError:
-            return f"Im sorry. I could not find the city \"{self.city}\"\nIf this is an bug, please contact **Tr4shL0rd#8279** or create a new issue on https://github.com/Tr4shL0rd/Tr4shBot/issues" #pylint:disable=line-too-long
-        resp = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={self.api_key}&units=metric", timeout=1).json() #pylint:disable=line-too-long
-        sky_desc        = resp["weather"][0]["main"]
-        actual_temp     = int(resp["main"]["temp"])
+            return f'Im sorry. I could not find the city "{self.city}"\nIf this is an bug, please contact **Tr4shL0rd#8279** or create a new issue on https://github.com/Tr4shL0rd/Tr4shBot/issues'  # pylint:disable=line-too-long
+        resp = requests.get(
+            f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={self.api_key}&units=metric", # pylint:disable=line-too-long
+            timeout=1,
+        ).json()  # pylint:disable=line-too-long
+        sky_desc = resp["weather"][0]["main"]
+        actual_temp = int(resp["main"]["temp"])
         feels_like_temp = int(resp["main"]["feels_like"])
-        humidity        = resp["main"]["humidity"]
-        wind_speeds     = resp["wind"]["speed"]
+        humidity = resp["main"]["humidity"]
+        wind_speeds = resp["wind"]["speed"]
         return f"""
 In {self.city.title()}
 it's currently {actual_temp}{celsius}C and feels like {feels_like_temp}{celsius}C.
