@@ -4,10 +4,8 @@ import discord
 from discord import Intents
 from logger import Logger
 from dotenv import load_dotenv
-from rich import print as rprint
 from animal_fact import DogFact
 from animal_fact import CatFact
-#from weather_file import Weather
 import weather_file
 import helper
 load_dotenv()
