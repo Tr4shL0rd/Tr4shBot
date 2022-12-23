@@ -60,7 +60,7 @@ class Weather:
         except AttributeError:
             return f'Im sorry. I could not find the city "{self.city}"\nIf this is an bug, please contact **Tr4shL0rd#8279** or create a new issue on https://github.com/Tr4shL0rd/Tr4shBot/issues'  # pylint:disable=line-too-long
         resp = requests.get(
-            f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={self.api_key}&units=metric", # pylint:disable=line-too-long
+            f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={self.api_key}&units=metric",  # pylint:disable=line-too-long
             timeout=1,
         ).json()  # pylint:disable=line-too-long
         sky_desc = resp["weather"][0]["main"]

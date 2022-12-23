@@ -54,9 +54,14 @@ class Logger:
         - sys_log(self, message: str) -> str: Logs system messages to a file and
                 returns the logged message.
     """
+
     def __init__(self) -> None:
-        self.chat_log_file = open("logs/chatlog.log", "a+", encoding=("utf-8")) #pylint:disable=consider-using-with
-        self.sys_log_file = open("logs/syslog.log", "a+", encoding=("utf-8"))   #pylint:disable=consider-using-with
+        self.chat_log_file = open(
+            "logs/chatlog.log", "a+", encoding=("utf-8")
+        )  # pylint:disable=consider-using-with
+        self.sys_log_file = open(
+            "logs/syslog.log", "a+", encoding=("utf-8")
+        )  # pylint:disable=consider-using-with
         self.current_time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
     def log_boilerplate(self, message, event: str):
@@ -73,7 +78,7 @@ class Logger:
         ---
             - str: The prefix for the log message.
         """
-        return f"[{event.upper()}][{message.created_at}] [{message.author.name}#{message.author.discriminator} -> {message.channel.name}]:" # pylint:disable=line-too-long
+        return f"[{event.upper()}][{message.created_at}] [{message.author.name}#{message.author.discriminator} -> {message.channel.name}]:"  # pylint:disable=line-too-long
 
     def close_chat_file(self):
         """
@@ -132,7 +137,7 @@ class Logger:
         ---
             - str: The logged message.
         """
-        msg = f"[EDIT][{message_before.created_at}] [{message_before.author.name}#{message_before.author.discriminator} -> {message_before.channel.name}]: {message_before.content} => {message_after.content}" #pylint:disable=line-too-long
+        msg = f"[EDIT][{message_before.created_at}] [{message_before.author.name}#{message_before.author.discriminator} -> {message_before.channel.name}]: {message_before.content} => {message_after.content}"  # pylint:disable=line-too-long
         self.chat_log_file.write(f"{msg}\n")
         self.chat_log_file.flush()
         return msg
