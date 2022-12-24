@@ -54,7 +54,7 @@ The bot can respond to the following commands:
 
 ## Known Glitches
 
-
+None known the moment
 
 ## Credits
 
