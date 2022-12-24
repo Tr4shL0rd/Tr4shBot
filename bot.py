@@ -129,7 +129,7 @@ class Commands:
             tuple: A tuple containing lists of all commands, including greetings and commands for
             requesting dog facts.
         """
-        return (self.greets(), self.dog_facts(), self.weather_commands())
+        return (self.greets(), self.dog_facts(), self.weather_commands(), self.help())
 
 
 @client.event
@@ -157,7 +157,7 @@ async def on_ready():
     g_members = "\n - ".join([member.name for member in guild.members])
     print(f"Guild Member:\n - {g_members}")
 
-
+###### MESSAGE HANDLING ######
 @client.event
 async def on_message(message):
     """
@@ -195,10 +195,9 @@ async def on_message(message):
         )
         help_text += f"**{', '.join(commands.dog_facts())}**: Get a random dog fact\n"
         help_text += f"**{', '.join(commands.cat_facts())}**: Get a random cat fact\n"
-        help_text += f"""**{', '.join(commands.weather_commands())} [city]**: Get weather information for a city\n"""  # pylint: disable=line-too-long
+        help_text += f"**{', '.join(commands.weather_commands())} [city]**: Get weather information for a city\n"  # pylint: disable=line-too-long
 
         await message.channel.send(help_text)
-
 
 @client.event
 async def on_message_edit(before, after):
@@ -234,6 +233,58 @@ async def on_message_delete(before):
         None
     """
     print(logger.chat_delete_log(before))
+
+###### REACTION HANDLING ######
+@client.event
+async def on_raw_reaction_add(payload):
+    reaction = payload.emoji.name
+    user = f"{payload.member.name}#{payload.member.discriminator}"
+    print(f"{user} reacted with {reaction} to a message")
+
+@client.event
+async def on_raw_reaction_remove(payload):
+    #print(payload)
+    reaction = payload.emoji.name
+    print(f"{reaction} removed from a message")
+
+@client.event
+async def on_raw_reaction_clear(payload):
+    print(payload)
+
+###### MEMBER HANDLING ######
+@client.event
+async def on_member_join(member):
+    print(member)
+
+@client.event
+async def on_member_remove(member):
+    print(member)
+
+@client.event
+async def on_member_update(member_befor, member_after):
+    print(member_befor, member_after)
+
+@client.event
+async def on_member_ban(guild,user):
+    print(guild,user)
+
+@client.event
+async def on_member_unban(guild,user):
+    print(guild,user)
+
+###### THREAD HANDLING ######
+@client.event
+async def on_thread_create(thread):
+    print(thread)
+
+@client.event
+async def on_thread_join(thread):
+    print(thread)
+
+@client.event
+async def on_thread_update(thread_before,thread_after):
+    print(thread_before,thread_after)
+
 
 
 if __name__ == "__main__":
