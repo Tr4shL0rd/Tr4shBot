@@ -6,15 +6,13 @@ This is a Discord bot built using the Discord Python library. It can respond to 
 
 <details>
     <summary>Click to see Contents</summary>
-    <li>
-        [Requirements](#requirements)
-        [Setup](#setup)
-        [Usage](#usage)
-        [OpenWeatherMap api key](#openweathermap-api-key)
-        [Todo](#todo)
-        [Known Glitches](#known-glitches)
-        [Credits](#credits)
-    </li>
+    <li>[Requirements](#requirements)</li>
+    <li>[Setup](#setup)</li>
+    <li>[Usage](#usage)</li>
+    <li>[OpenWeatherMap api key](#openweathermap-api-key)</li>
+    <li>[Todo](#todo)</li>
+    <li>[Known Glitches](#known-glitches)</li>
+    <li>[Credits](#credits)</li>
 </details>
 
 ## Requirements
