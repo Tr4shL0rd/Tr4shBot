@@ -142,6 +142,9 @@ class Logger:
         self.chat_log_file.flush()
         return msg
 
+    def chat_reaction_log(self, reaction,user):
+        pass#msg = f"{self.log_boilerplate()}"
+
     def chat_delete_log(self, message) -> str:
         """
         Logs a deleted message to the chat log file.
