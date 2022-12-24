@@ -4,16 +4,13 @@ This is a Discord bot built using the Discord Python library. It can respond to 
 
 ## Table of Contents
 
-<details>
-    <summary>Click to see Contents</summary>
-        <li>[Requirements](#requirements)</li>
-        <li>[Setup](#setup)</li>
-        <li>[Usage](#usage)</li>
-        <li>[OpenWeatherMap api key](#openweathermap-api-key)</li>
-        <li>[Todo](#todo)</li>
-        <li>[Known Glitches](#known-glitches)</li>
-        <li>[Credits](#credits)</li>
-</details>
+- [Requirements](#requirements)
+- [Setup](#setup)
+- [Usage](#usage)
+- [OpenWeatherMap api key](#openweathermap-api-key)
+- [Todo](#todo)
+- [Known Glitches](#known-glitches)
+- [Credits](#credits)
 
 ## Requirements
 
@@ -40,7 +37,7 @@ The bot can respond to the following commands:
     !catfact or !cat-fact: The bot will provide a random cat fact
     !weather [city]: The bot will provide weather information for the specified city. If no city is provided, the default city is "Esbjerg".
 
-## OpenWeatherMap api key
+### OpenWeatherMap api key
     Go to the OpenWeatherMap website and click on the "Sign Up" button in the top right corner.
     Fill out the registration form and click on the "Sign Up" button.
     After completing the registration, you will be redirected to the dashboard.
