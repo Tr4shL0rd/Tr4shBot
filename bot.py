@@ -35,17 +35,26 @@ Methods:
         various functions depending on the content of the message.
 """
 import os
+import sys
 from typing import List
 import discord
 from discord import Intents
 from dotenv import load_dotenv
+from rich import print as rprint
 from logger import Logger
 from animal_fact import DogFact
 from animal_fact import CatFact
+from giphy import Giphy
 import weather_file
 import helper
 
 load_dotenv()
+try:
+    if len(sys.argv) == 2:
+        DEBUG = True
+        rprint("[red underline]WARNING! RUNNING IN DEBUG MODE![red underline]")
+except IndexError:
+    DEBUG = False
 
 logger = Logger()
 dog_fact = DogFact()
@@ -77,7 +86,8 @@ class Commands:
             list: A list of greetings.
         """
         return helper.fix_command(
-            ["hello", "hey", "hi", "hiya", "greetings", "yo", "sup", "wassup", "howdy"]
+            ["hello", "hey", "hi", "hiya", "greetings",
+                "yo", "sup", "wassup", "howdy"]
         )
 
     def dog_facts(self) -> List[str]:
@@ -110,7 +120,7 @@ class Commands:
         """
         return helper.fix_command(["weather", "w"])
 
-    def help(self) -> List[str]:
+    def help_commands(self) -> List[str]:
         """
         Returns a list of commands for accessing help information.
 
@@ -119,6 +129,12 @@ class Commands:
             List[str]: A list of commands for accessing help information.
         """
         return helper.fix_command(["help", "h", "?"])
+
+    def giphy_gif_commands(self) -> List[str]:
+        return helper.fix_command(["gif", "giphy-gif"])
+
+    def giphy_sticker_commands(self) -> List[str]:
+        return helper.fix_command(["sticker", "stick", "giphy-sticker"])
 
     def all_commands(self) -> List[str]:
         """
@@ -129,7 +145,7 @@ class Commands:
             tuple: A tuple containing lists of all commands, including greetings and commands for
             requesting dog facts.
         """
-        return (self.greets(), self.dog_facts(), self.weather_commands(), self.help())
+        return (self.greets(), self.dog_facts(), self.weather_commands(), self.help_commands())
 
 
 @client.event
@@ -139,7 +155,7 @@ async def on_connect():
 
     Prints a system log message indicating that the bot has connected.
     """
-    print(logger.sys_log("Bot Is Connected!"))
+    print(logger.sys_log("Bot Is Connected!" if not DEBUG else "Bot Is Connected! [DEBUG MODE]"))
 
 
 @client.event
@@ -148,16 +164,22 @@ async def on_ready():
     Event for when the bot is ready to receive messages.
     Prints the bot's status and list of guild members.
     """
+    bot_status_channel = client.get_channel(1056239557084979260)
+    await bot_status_channel.send("Tr4shBot Running" if not DEBUG else "Tr4shBot Running [DEBUG MODE]")
+    # gets server membes
     guild = None
     for guild in client.guilds:
         if guild.name == GUILD:
             break
-    print(f"{client.user} is ready on following servers:\n{guild.name}(ID: {guild.id})")
+    print(f"{client.user} is ready on the following servers:\n - {guild.name}(ID: {guild.id})")
 
     g_members = "\n - ".join([member.name for member in guild.members])
     print(f"Guild Member:\n - {g_members}")
+    #if DEBUG:
 
 ###### MESSAGE HANDLING ######
+
+
 @client.event
 async def on_message(message):
     """
@@ -169,26 +191,45 @@ async def on_message(message):
     """
     commands = Commands()
     print(logger.chat_log(message=message))
+    # ping-pong command
     if message.content.lower() == "ping":
         await message.channel.send("pong")
-
+    # gretting commands
     elif message.content.lower() in commands.greets():
         await message.channel.send(helper.random_greeting(message.author.name))
-
+    # dog commands
     elif message.content.lower() in commands.dog_facts():
         await message.channel.send(dog_fact.random_fact())
-
+    # cat commands
     elif message.content.lower() in commands.cat_facts():
         await message.channel.send(cat_fact.random_fact())
-
+    # weather commands
     elif message.content.lower().split()[0] in commands.weather_commands():
         city_name = message.content.lower().split(" ")
         weather_class = weather_file.Weather(
             city="esbjerg" if len(city_name) < 2 else city_name[-1]
         )
         await message.channel.send(weather_class.weather())
+    # gif commands
+    elif message.content.lower().split()[0] in commands.giphy_gif_commands():
+        search_query = message.content.lower().split(" ")
+        if len(search_query) < 2:
+            await message.channel.send("No Search query was given :(")
+            return 
+        search_query = search_query[1:]
+        giphy = Giphy(search=search_query)
+        await message.channel.send(giphy.get_gif())
+    # sticker commands
+    elif message.content.lower().split()[0] in commands.giphy_sticker_commands():
+        search_query = message.content.lower().split(" ")
+        if len(search_query) < 2:
+            await message.channel.send("No Search query was given :(")
+            return 
+        search_query = search_query[1:]
+        giphy = Giphy(search=search_query)
+        await message.channel.send(giphy.get_sticker())
 
-    elif message.content.lower() in commands.help():
+    elif message.content.lower() in commands.help_commands():
         help_text = "**Available commands:**\n"
         help_text += (
             f"**{', '.join(commands.greets()[0:3])}**: Send a greeting to the user\n"
@@ -196,8 +237,10 @@ async def on_message(message):
         help_text += f"**{', '.join(commands.dog_facts())}**: Get a random dog fact\n"
         help_text += f"**{', '.join(commands.cat_facts())}**: Get a random cat fact\n"
         help_text += f"**{', '.join(commands.weather_commands())} [city]**: Get weather information for a city\n"  # pylint: disable=line-too-long
+        help_text += f"**{', '.join(commands.giphy_gif_commands())} [search]**: displays a GIF based on the search terms"
 
         await message.channel.send(help_text)
+
 
 @client.event
 async def on_message_edit(before, after):
@@ -235,65 +278,79 @@ async def on_message_delete(before):
     print(logger.chat_delete_log(before))
 
 ###### REACTION HANDLING ######
+
+
 @client.event
 async def on_raw_reaction_add(payload):
     reaction = payload.emoji.name
     user = f"{payload.member.name}#{payload.member.discriminator}"
     print(f"{user} reacted with {reaction} to a message")
 
+
 @client.event
 async def on_raw_reaction_remove(payload):
-    #print(payload)
+    # print(payload)
     reaction = payload.emoji.name
     print(f"{reaction} removed from a message")
+
 
 @client.event
 async def on_raw_reaction_clear(payload):
     print(payload)
 
 ###### MEMBER HANDLING ######
+
+
 @client.event
 async def on_member_join(member):
     print(member)
+
 
 @client.event
 async def on_member_remove(member):
     print(member)
 
+
 @client.event
 async def on_member_update(member_befor, member_after):
     print(member_befor, member_after)
 
-@client.event
-async def on_member_ban(guild,user):
-    print(guild,user)
 
 @client.event
-async def on_member_unban(guild,user):
-    print(guild,user)
+async def on_member_ban(guild, user):
+    print(guild, user)
+
+
+@client.event
+async def on_member_unban(guild, user):
+    print(guild, user)
 
 ###### THREAD HANDLING ######
+
+
 @client.event
 async def on_thread_create(thread):
     print(thread)
+
 
 @client.event
 async def on_thread_join(thread):
     print(thread)
 
+
 @client.event
-async def on_thread_update(thread_before,thread_after):
-    print(thread_before,thread_after)
+async def on_thread_update(thread_before, thread_after):
+    print(thread_before, thread_after)
+
 
 @client.event
 async def on_thread_remove(thread):
     print(thread)
 
+
 @client.event
 async def on_thread_delete(thread):
     print(thread)
-
-
 
 
 if __name__ == "__main__":
