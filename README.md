@@ -50,7 +50,7 @@ The bot can respond to the following commands:
 * [ ] Add better commenting for the code
 * [ ] Host the bot on a raspberry pi
 * [ ] Restructure the project 
-* [ ] refactor code to use on_raw_message_*() instead of on_message_*()
+* [ ] refactor code to use on_raw_message_\*() instead of on_message_\*()
 
 ## Known Glitches
 
