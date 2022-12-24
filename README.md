@@ -3,6 +3,7 @@
 This is a Discord bot built using the Discord Python library. It can respond to various commands and provide information such as dog and cat facts, greetings, and weather information.
 
 ## Table of Contents
+
 <details>
     <summary>Click to see Contents</summary>
     <p>
@@ -15,6 +16,7 @@ This is a Discord bot built using the Discord Python library. It can respond to 
     [Credits](#credits)
     </p>
 </details>
+
 ## Requirements
 
 * [Python](www.python.org) 3.9 or higher
