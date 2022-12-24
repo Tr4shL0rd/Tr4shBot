@@ -4,3 +4,4 @@ logs/*
 testing.py
 reports/
 tools
+gif_data.json
