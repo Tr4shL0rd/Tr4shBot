@@ -285,6 +285,15 @@ async def on_thread_join(thread):
 async def on_thread_update(thread_before,thread_after):
     print(thread_before,thread_after)
 
+@client.event
+async def on_thread_remove(thread):
+    print(thread)
+
+@client.event
+async def on_thread_delete(thread):
+    print(thread)
+
+
 
 
 if __name__ == "__main__":
